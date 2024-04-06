@@ -1,6 +1,6 @@
 
 let geoUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-let colors = ["#009933", "#66ff66", "#ccffcc", "#ffccff", "#ff66ff", "#cc00cc"];
+let colors = ["#f0f442", "#d9f43f", "#aef747", "#00f747", "#04be79", "#04773c"];
 
 //Create markers for each earthquake instance
 function createFeatures(earthquakeData) {
@@ -20,7 +20,7 @@ function createFeatures(earthquakeData) {
           color: "black",
           fillColor: getColor(depth),
           radius: props["mag"]*10000
-        }).bindPopup(`Magnitude: ${props["mag"]}<br>Location: ${props["place"]}`)
+        }).bindPopup(`Magnitude: ${props["mag"]}<br>Location: ${props["place"]}<br>Depth: ${depth}`)
       );
     }
   
@@ -30,11 +30,7 @@ function createFeatures(earthquakeData) {
   
  //Generate map from earthquake data retrieved
 function createMap(earthquakes) {
-    // Create the base layers.
-    let street = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    })
-
+    // Create the base layers (greyscale Map for readability).
     var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
@@ -48,9 +44,9 @@ function createMap(earthquakes) {
   
     // Create an overlays object.
     let quakeLayer = L.layerGroup(earthquakes);
-  
+
     let overlayMaps = {
-      "QuakeSpots": quakeLayer
+      "Earthquakes": quakeLayer
     }
   
     // Create the map with both layers
@@ -87,6 +83,7 @@ function getColor(depth) {
     }
 };
 
+//Add legend info to 
 function addLegend(map) {
     let legend = L.control({position: 'bottomright'});
 
